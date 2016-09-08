@@ -13,7 +13,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var titulo: UILabel!
     @IBOutlet weak var autors: UITextView!
     @IBOutlet weak var etiquetaPortada: UILabel!
-    @IBOutlet weak var portada: UILabel!
+    @IBOutlet weak var portada: UIImageView!
     @IBOutlet weak var isbn: UITextField!
     var textoresultado: String = ""
     var urlstable: String = "https://openlibrary.org/api/books?jscmd=data&format=json&bibkeys=ISBN:"
@@ -22,6 +22,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         isbn.delegate = self
         isbn.keyboardType = UIKeyboardType.WebSearch
+        self.isbn.returnKeyType = .Search
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -29,7 +30,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         isbn.text = ""
         titulo.text = ""
         autors.text = ""
-        portada.text = ""
     }
         
     @IBAction func textFieldDoneEditing(sender: UITextField){
@@ -63,7 +63,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     // Portada
                         if (dico2["cover"]) != nil {
                             let dico4 = dico2.valueForKey("cover") as! NSDictionary
-                            self.portada.text = dico4.valueForKey("small") as! NSString as String
+                            let deco5 = NSURL(string : dico4.valueForKey("small") as! NSString as String)
+                            let datax = NSData(contentsOfURL: deco5!)
+                            self.portada.image = UIImage(data: datax!)!
                             self.etiquetaPortada.hidden = true
                             self.portada.hidden = true
                         }
